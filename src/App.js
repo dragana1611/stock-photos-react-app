@@ -83,7 +83,7 @@ function App() {
   }, [newImages]);
 
   const event = () => {
-    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 5) {
+    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 5) {
       setNewImages(true);
     }
   };
