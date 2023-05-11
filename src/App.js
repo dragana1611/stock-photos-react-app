@@ -27,6 +27,19 @@ function App() {
     fetchImages();
   }, []);
 
+  useEffect(() => {
+    const event = window.addEventListener("scroll", () => {
+      if (
+        !loading &&
+        window.innerHeight + window.scrollY >= document.body.scrollHeight - 5
+      ) {
+        //-5px to start loading new images 5px earlier
+        console.log("it works");
+      }
+    });
+    return () => window.removeEventListener("scroll", event);
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
   };
