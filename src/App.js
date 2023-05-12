@@ -12,8 +12,8 @@ function App() {
   const [photos, setPhotos] = useState([]);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
+  const mounted = useRef(false); // it is not triggering the render
   const [newImages, setNewImages] = useState(false);
-  const mounted = useRef(false);
 
   const fetchImages = async () => {
     setLoading(true);
@@ -83,23 +83,21 @@ function App() {
   }, [newImages]);
 
   const event = () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 5) {
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 5) {
       setNewImages(true);
     }
   };
 
   useEffect(() => {
     window.addEventListener("scroll", event);
-    return window.removeEventListener("scroll", event);
+    return () => window.removeEventListener("scroll", event);
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // setPage(1);
-    // fetchImages();
     if (!query) return;
     if (page === 1) {
-      fetchImages(1);
+      fetchImages();
       return;
     }
     setPage(1);
@@ -123,7 +121,7 @@ function App() {
       </section>
       <section className="photos">
         <div className="photos-center">
-          {photos.map((image, index) => {
+          {photos.map((image) => {
             return <Photo key={image.id} {...image} />;
           })}
         </div>
